@@ -12,29 +12,42 @@ public class GuiLauncher {
     private CRS aCRS = new CRS(); 
 
     public void start() {
-    	JFrame mainFrame = new JFrame("Clinical Appointment System");
+        JFrame mainFrame = new JFrame("Clinical Appointment System");
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        mainFrame.setBounds(50, 50, 700, 300);
+        mainFrame.setBounds(50, 50, 700, 350);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(7, 1));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JLabel titleLabel = new JLabel("Clinical Appointment System", JLabel.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
-        panel.add(titleLabel);
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JButton patientButton = new JButton("Patient Operations");
         JButton doctorButton = new JButton("Doctor Operations");
         JButton rendezvousButton = new JButton("Rendezvous Operations");
         JButton sectionButton = new JButton("Section Operations");
         JButton hospitalButton = new JButton("Hospital Operations");
-        
 
-        panel.add(patientButton);
-        panel.add(doctorButton);
-        panel.add(rendezvousButton);
-        panel.add(sectionButton);
-        panel.add(hospitalButton);
+        Dimension buttonSize = new Dimension(400, 50);
+
+        JButton[] buttons = {
+            patientButton, doctorButton, rendezvousButton, sectionButton, hospitalButton
+        };
+
+        for (JButton btn : buttons) {
+            btn.setMaximumSize(buttonSize);
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+
+        panel.add(Box.createVerticalStrut(15));
+        panel.add(titleLabel);
+        panel.add(Box.createVerticalStrut(20));
+
+        for (JButton btn : buttons) {
+            panel.add(btn);
+            panel.add(Box.createVerticalStrut(10));
+        }
 
         mainFrame.add(panel);
         mainFrame.setVisible(true);
@@ -47,19 +60,33 @@ public class GuiLauncher {
     }
 
     private void patientMenu() {
-    	JFrame frame = new JFrame("Patient Operations");
+        JFrame frame = new JFrame("Patient Operations");
         frame.setBounds(200, 200, 500, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JButton addPatientButton = new JButton("Add Patient");
         JButton listPatientsButton = new JButton("List Patients");
         JButton backButton = new JButton("Back to Main Menu");
 
-        panel.add(addPatientButton);
-        panel.add(listPatientsButton);
-        panel.add(backButton);
+        Dimension buttonSize = new Dimension(220, 40);
+
+        JButton[] buttons = {
+            addPatientButton, listPatientsButton, backButton
+        };
+
+        for (JButton btn : buttons) {
+            btn.setMaximumSize(buttonSize);
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+
+        panel.add(Box.createVerticalStrut(20));
+
+        for (JButton btn : buttons) {
+            panel.add(btn);
+            panel.add(Box.createVerticalStrut(10));
+        }
 
         frame.add(panel);
         frame.setVisible(true);
@@ -131,17 +158,32 @@ public class GuiLauncher {
     }
 
     private void doctorMenu() {
-    	JFrame frame = new JFrame("Doctor Operations");
+        JFrame frame = new JFrame("Doctor Operations");
         frame.setBounds(200, 200, 500, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(2, 1));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JButton addDoctorButton = new JButton("Add Doctor");
         JButton backButton = new JButton("Back to Main Menu");
 
-        panel.add(addDoctorButton);
-        panel.add(backButton);
+        Dimension buttonSize = new Dimension(220, 40);
+
+        JButton[] buttons = {
+            addDoctorButton, backButton
+        };
+
+        for (JButton btn : buttons) {
+            btn.setMaximumSize(buttonSize);
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+
+        panel.add(Box.createVerticalStrut(30));
+
+        for (JButton btn : buttons) {
+            panel.add(btn);
+            panel.add(Box.createVerticalStrut(10));
+        }
 
         frame.add(panel);
         frame.setVisible(true);
@@ -204,15 +246,29 @@ public class GuiLauncher {
         frame.setBounds(200, 200, 500, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JButton createRendezvousButton = new JButton("Create Rendezvous");
         JButton listRendezvousButton = new JButton("List Rendezvous");
         JButton backButton = new JButton("Back to Main Menu");
 
-        panel.add(createRendezvousButton);
-        panel.add(listRendezvousButton);
-        panel.add(backButton);
+        Dimension buttonSize = new Dimension(220, 40);
+
+        JButton[] buttons = {
+            createRendezvousButton, listRendezvousButton, backButton
+        };
+
+        for (JButton btn : buttons) {
+            btn.setMaximumSize(buttonSize);
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+
+        panel.add(Box.createVerticalStrut(20));
+
+        for (JButton btn : buttons) {
+            panel.add(btn);
+            panel.add(Box.createVerticalStrut(10));
+        }
 
         frame.add(panel);
         frame.setVisible(true);
@@ -305,13 +361,28 @@ public class GuiLauncher {
         frame.setBounds(200, 200, 500, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JButton createSectionButton = new JButton("Add Section");
         JButton backButton = new JButton("Back to Main Menu");
 
-        panel.add(createSectionButton);
-        panel.add(backButton);
+        Dimension buttonSize = new Dimension(220, 40);
+
+        JButton[] buttons = {
+            createSectionButton, backButton
+        };
+
+        for (JButton btn : buttons) {
+            btn.setMaximumSize(buttonSize);
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+
+        panel.add(Box.createVerticalStrut(30));
+
+        for (JButton btn : buttons) {
+            panel.add(btn);
+            panel.add(Box.createVerticalStrut(10));
+        }
 
         frame.add(panel);
         frame.setVisible(true);
@@ -370,15 +441,29 @@ public class GuiLauncher {
         frame.setBounds(200, 200, 500, 300);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(3, 1));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
         JButton createHospitalButton = new JButton("Add Hospital");
         JButton listHospitalsButton = new JButton("List Hospitals");
         JButton backButton = new JButton("Back to Main Menu");
 
-        panel.add(createHospitalButton);
-        panel.add(listHospitalsButton);
-        panel.add(backButton);
+        Dimension buttonSize = new Dimension(220, 40);
+
+        JButton[] buttons = {
+            createHospitalButton, listHospitalsButton, backButton
+        };
+
+        for (JButton btn : buttons) {
+            btn.setMaximumSize(buttonSize);
+            btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        }
+
+        panel.add(Box.createVerticalStrut(20));
+
+        for (JButton btn : buttons) {
+            panel.add(btn);
+            panel.add(Box.createVerticalStrut(10));
+        }
 
         frame.add(panel);
         frame.setVisible(true);
