@@ -27,7 +27,7 @@ The system supports both **Console (CLI)** and **Graphical User Interface (GUI)*
 
 ---
 
-## 🖼️ Application Screenshots
+## 🖼️ Application
 
 ### 🏠 Main Menu — System Navigation Hub
 
