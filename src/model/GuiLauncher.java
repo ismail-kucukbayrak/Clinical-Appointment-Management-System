@@ -533,7 +533,7 @@ public class GuiLauncher {
         JList<String> patientList = new JList<>(model);
         JScrollPane scrollPane = new JScrollPane(patientList);
 
-        JOptionPane.showMessageDialog(parentFrame, scrollPane, "Patient List", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(parentFrame, scrollPane, "Hospital List", JOptionPane.INFORMATION_MESSAGE);
     }
 
     public static void main(String[] args) {
