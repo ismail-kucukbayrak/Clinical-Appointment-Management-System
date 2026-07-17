@@ -104,15 +104,15 @@ Hospital-Appointment-System/
 │   ├── main.py            FastAPI app setup, startup hook
 │   ├── config.py           App configuration (database URL, clinic hours, etc.)
 │   ├── database.py          SQLAlchemy engine/session setup
-│   ├── security.py          Password hashing and session token helpers
-│   ├── deps.py               Shared request dependencies
-│   ├── seed.py                Default admin account seeding
-│   ├── models/                 SQLAlchemy models (User, Doctor, Polyclinic, Appointment, Report)
-│   ├── routers/                 Route handlers per role (auth, patient, doctor, billing_officer, admin)
-│   ├── services/                 Business logic (appointment slot scheduling)
-│   ├── templates/                 Jinja2 templates (HTML + HTMX partials)
-│   └── static/                     CSS
-├── images/                          Screenshots used in this README
+│   ├── security.py           Password hashing and session token helpers
+│   ├── deps.py                Shared request dependencies
+│   ├── seed.py                 Default admin account seeding
+│   ├── models/                  SQLAlchemy models (User, Doctor, Polyclinic, Appointment, Report)
+│   ├── routers/                  Route handlers per role (auth, patient, doctor, billing_officer, admin)
+│   ├── services/                  Business logic (appointment slot scheduling)
+│   ├── templates/                  Jinja2 templates (HTML + HTMX partials)
+│   └── static/                      CSS
+├── images/                           Screenshots used in this README
 └── requirements.txt
 ```
 
