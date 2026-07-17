@@ -1,0 +1,19 @@
+<label>Available Times</label>
+{% if slots %}
+<select id="slot_select" name="slot"
+        hx-get="/patient/book/confirm-button"
+        hx-target="#confirm-button-wrapper"
+        hx-trigger="change"
+        hx-vals='{"doctor_id": "{{ doctor_id }}"}'>
+    <option value="">Select a time</option>
+    {% for slot in slots %}
+    <option value="{{ slot.isoformat() }}">
+        {{ slot.strftime("%H:%M") }}
+    </option>
+    {% endfor %}
+</select>
+
+<div id="confirm-button-wrapper"></div>
+{% else %}
+<p class="empty-state">No available time slots for this day.</p>
+{% endif %}

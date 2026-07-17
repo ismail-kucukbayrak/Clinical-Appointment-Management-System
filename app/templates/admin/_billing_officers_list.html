@@ -1,0 +1,26 @@
+<div class="admin-list-header">
+    <h2>Billing Officers</h2>
+    <button type="button" class="btn btn-small"
+            hx-get="/admin/billing-officers/add-form" hx-target="#admin-form-area" hx-swap="innerHTML">
+        + Add Billing Officer
+    </button>
+</div>
+<table>
+    <thead><tr><th>Name</th><th></th></tr></thead>
+    <tbody>
+        {% for billing_officer in billing_officers %}
+        <tr>
+            <td>{{ billing_officer.full_name }}</td>
+            <td>
+                <form hx-post="/admin/billing-officers/{{ billing_officer.id }}/delete"
+                      hx-target="#admin-list-area" hx-swap="innerHTML"
+                      hx-confirm="Delete this billing officer?">
+                    <button type="submit" class="btn-small danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="2" class="empty-state">No billing officers yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>

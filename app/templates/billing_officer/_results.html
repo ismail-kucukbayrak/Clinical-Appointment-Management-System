@@ -1,0 +1,55 @@
+{% if search_attempted %}
+    {% if patient %}
+    <div class="card">
+        <h2>{{ patient.full_name }}</h2>
+        <p class="muted">National ID: {{ patient.national_id }}</p>
+
+        {% if reports %}
+        <table>
+            <thead>
+                <tr>
+                    <th class="nowrap">Date</th>
+                    <th class="nowrap">Prescription Code</th>
+                    <th>Clinical Notes</th>
+                    <th class="nowrap">Charge (USD)</th>
+                    <th class="nowrap">Status</th>
+                    <th class="nowrap"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for report in reports %}
+                <tr>
+                    <td class="nowrap">{{ report.created_at.strftime("%d %B %Y") if report.created_at else "-" }}</td>
+                    <td class="nowrap">{{ report.prescription_code }}</td>
+                    <td>{{ report.notes }}</td>
+                    <td class="nowrap">${{ "%.2f"|format(report.fee) }}</td>
+                    <td class="nowrap">
+                        {% if report.is_paid %}
+                        <span class="badge paid">paid</span>
+                        {% else %}
+                        <span class="badge unpaid">unpaid</span>
+                        {% endif %}
+                    </td>
+                    <td class="nowrap">
+                        {% if not report.is_paid %}
+                        <form method="post" action="/billing-officer/reports/{{ report.id }}/mark-paid"
+                              hx-post="/billing-officer/reports/{{ report.id }}/mark-paid"
+                              hx-target="#results"
+                              hx-include="[name='national_id']">
+                            <input type="hidden" name="national_id" value="{{ searched_id }}">
+                            <button type="submit" class="btn-small">Mark Paid</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No reports found for this patient.</p>
+        {% endif %}
+    </div>
+    {% else %}
+    <p class="empty-state">No patient found with this national ID.</p>
+    {% endif %}
+{% endif %}

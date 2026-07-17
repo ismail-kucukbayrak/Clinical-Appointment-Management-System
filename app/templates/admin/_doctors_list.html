@@ -1,0 +1,27 @@
+<div class="admin-list-header">
+    <h2>Doctors</h2>
+    <button type="button" class="btn btn-small"
+            hx-get="/admin/doctors/add-form" hx-target="#admin-form-area" hx-swap="innerHTML">
+        + Add Doctor
+    </button>
+</div>
+<table>
+    <thead><tr><th>Name</th><th>Polyclinic</th><th></th></tr></thead>
+    <tbody>
+        {% for doctor in doctors %}
+        <tr>
+            <td>{{ doctor.user.full_name }}</td>
+            <td>{{ doctor.polyclinic.name }}</td>
+            <td>
+                <form hx-post="/admin/doctors/{{ doctor.id }}/delete"
+                      hx-target="#admin-list-area" hx-swap="innerHTML"
+                      hx-confirm="Delete this doctor?">
+                    <button type="submit" class="btn-small danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" class="empty-state">No doctors yet.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>

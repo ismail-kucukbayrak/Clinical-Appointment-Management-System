@@ -1,204 +1,200 @@
-# 🏥 Clinical Appointment System (CRS)
+# 🏥 Hospital Appointment System
 
-![Java](https://img.shields.io/badge/Java-17+-orange?logo=java)
-![Build](https://img.shields.io/badge/Build-Passing-brightgreen)
-![Platform](https://img.shields.io/badge/Platform-Desktop-blue)
-![UI](https://img.shields.io/badge/UI-Swing-lightgrey)
-![Storage](https://img.shields.io/badge/Storage-Serialization-yellow)
-![License](https://img.shields.io/badge/License-Educational-informational)
-![Status](https://img.shields.io/badge/Status-Completed-success)
+![Python](https://img.shields.io/badge/Python-3.11%2B-blue?logo=python)
+![FastAPI](https://img.shields.io/badge/FastAPI-Backend-009688?logo=fastapi)
+![HTMX](https://img.shields.io/badge/HTMX-Frontend-3D72D7)
+![SQLite](https://img.shields.io/badge/SQLite-Database-lightgrey?logo=sqlite)
+![Jinja2](https://img.shields.io/badge/Jinja2-Templates-B41717)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
 
-A **Java-based Clinical Appointment Management System** that allows managing patients, doctors, hospitals, sections, and appointments (rendezvous).  
-The system supports both **Console (CLI)** and **Graphical User Interface (GUI)** modes.
+A full hospital appointment management system where patients book appointments with doctors, doctors record visit reports, billing officers look up and settle charges, and an admin manages the underlying polyclinics, doctors, and billing officers — all with zero database setup, since SQLite runs as a single local file.
 
 ---
 
-## 🚀 Features
+## 📋 Features
 
-- 👤 Patient management (add / list)
-- 👨‍⚕️ Doctor management (assign to hospital & section)
-- 🏥 Hospital management
-- 🧩 Section management within hospitals
-- 📅 Appointment (Rendezvous) creation and listing
-- 💾 Persistent data storage using serialization (`Datas.dat`)
-- 🖥️ Dual interface:
-  - Console-based interaction
-  - Swing-based GUI
+### 🧑‍⚕️ Patient
 
----
+- Register and log in with a national ID and password
+- Book an appointment by choosing a polyclinic → doctor → day → time slot
+- View all personal appointments and their status
+- Cancel an upcoming scheduled appointment
 
-## 🖼️ Application
+### 👨‍⚕️ Doctor
 
-### 🏠 Main Menu — System Navigation Hub
+- Log in with a national ID and password (account created by Admin)
+- View today's appointment schedule
+- Mark a patient's visit as completed
+- Write a visit report (prescription code, clinical notes, charge)
 
-The main entry point of the application. From here, users can navigate to all core modules including patient, doctor, hospital, section, and appointment management.
+### 💳 Billing Officer
 
-<img src="images/MainMenu.png" width="50%">
+- Log in with a national ID and password (account created by Admin)
+- Look up a patient's visit reports and charges by national ID
+- Mark a charge as paid
 
----
+### 🛠️ Admin
 
-### 🏥 Hospital Operations — Managing Hospitals
-
-Allows users to:
-- Add new hospitals into the system
-- View all registered hospitals
-
-Hospitals act as the top-level structure that contains sections and doctors.
-
-<img src="images/Hospital.png" width="50%">
+- Log in with a fixed account (`admin` / `admin`)
+- Add and remove polyclinics
+- Add and remove doctors, assigning each to a polyclinic
+- Add and remove billing officers
 
 ---
 
-### 👨‍⚕️ Doctor Operations — Assigning Doctors
+## 🖥️ User Interface
 
-Used to:
-- Add doctors with a **diploma ID**
-- Assign doctors to a specific **hospital and section**
+### Login Screen
 
-Each doctor is automatically given a schedule for appointment management.
+The landing page — a role picker for Patient, Doctor, and Billing Officer, with the Admin login reachable from the top-right corner. Choosing a role loads its sign-in form on the right without leaving the page. Patients who don't have an account yet can register from a link on the Patient sign-in form.
 
-<img src="images/Doctor.png" width="50%">
+![Login screen](images/login-screen.png)
 
 ---
 
-### 👤 Patient Operations — Patient Registration
+### Patient
 
-Provides functionality to:
-- Register new patients using a **national ID**
-- List all existing patients
+After logging in, a patient lands on their dashboard with two sections: booking a new appointment and viewing existing ones. Booking works as a chain of dropdowns — picking a polyclinic loads its doctors, picking a doctor loads the days it has open slots, and picking a day loads its available times. Selecting a time reveals a **Confirm** button that books the appointment. Below that, "My Appointments" lists every appointment the patient has made, with a **Cancel** button on any that are still upcoming and scheduled.
 
-Patients are required for creating appointments.
-
-<img src="images/Patient.png" width="50%">
+![Patient dashboard](images/patient-dashboard.png)
 
 ---
 
-### 📅 Rendezvous Operations — Appointment Management
+### Doctor
 
-Core feature of the system. Enables:
-- Creating appointments between patients and doctors
-- Listing all appointments
+The doctor dashboard lists only today's appointments, with the patient's name and the current status of each. A **Complete Visit** button appears on any appointment that's still scheduled; clicking it marks the visit completed and immediately opens the visit report form for that patient.
 
-Includes:
-- Date & time selection
-- Daily appointment limit control (max 10 per doctor)
+![Doctor dashboard](images/doctor-dashboard.png)
 
-<img src="images/Rendezvous.png" width="50%">
+**Visit Report** — shows the patient's name and the appointment's date and time, followed by fields for a prescription code, clinical notes (diagnosis, findings, and any recommended follow-up such as imaging or lab work), and a charge in USD. Submitting the form — even left blank — always records a report for that visit, so a completed appointment can never be left without one. If the charge is left at zero, the report is automatically marked as paid, since there's nothing to collect.
+
+![Visit report](images/doctor-visit-report.png)
 
 ---
 
-## 🧱 Project Structure
+### Billing Officer
+
+The billing officer dashboard has a national ID field and a **Show Report** button — searches only run when the button is clicked, not as the officer types. A matching patient's visit history is shown as a table (date, prescription code, clinical notes, charge, and payment status), with a **Mark Paid** button on any report that's still unpaid. Searching an ID with no matching patient shows a clear "no patient found" message instead of an empty table.
+
+![Billing officer dashboard](images/billing-officer-dashboard.png)
+
+---
+
+### Admin
+
+The admin dashboard is split into three columns: a fixed list of what can be managed on the left (Polyclinics, Doctors, Billing Officers), the corresponding list in the middle, and an add-form on the right that appears only when needed. Every delete action asks for confirmation first.
+
+**Polyclinics** — the simplest of the three: a name, a list of existing polyclinics, and a delete button on each (deleting a polyclinic also removes its doctors).
+
+![Admin polyclinics](images/admin-polyclinics.png)
+
+**Doctors** — same layout, but the add-form takes a full name, national ID, password, and the polyclinic to assign the doctor to.
+
+![Admin add doctor](images/admin-add-doctor.png)
+
+**Billing Officers** work the same way as doctors, just without a polyclinic to assign — the add-form only asks for a full name, national ID, and password.
+
+---
+
+## 🏗️ Project Structure
 
 ```
-.
-├── images/
-├── src/
-│   ├── exception/
-│   ├── model/
-│   └── test/
-├── Datas.dat
-└── README.md
+Hospital-Appointment-System/
+├── app/
+│   ├── main.py            FastAPI app setup, startup hook
+│   ├── config.py           App configuration (database URL, clinic hours, etc.)
+│   ├── database.py          SQLAlchemy engine/session setup
+│   ├── security.py          Password hashing and session token helpers
+│   ├── deps.py               Shared request dependencies
+│   ├── seed.py                Default admin account seeding
+│   ├── models/                 SQLAlchemy models (User, Doctor, Polyclinic, Appointment, Report)
+│   ├── routers/                 Route handlers per role (auth, patient, doctor, billing_officer, admin)
+│   ├── services/                 Business logic (appointment slot scheduling)
+│   ├── templates/                 Jinja2 templates (HTML + HTMX partials)
+│   └── static/                     CSS
+├── images/                          Screenshots used in this README
+└── requirements.txt
 ```
 
 ---
 
-## ⚙️ How It Works
+## 🗄️ Database
 
-### 🔹 Core System (CRS)
+SQLite database (`hospital.db`), created automatically on first run via SQLAlchemy — no separate database server to install or configure.
 
-- Manages:
-  - Patients (`HashMap<Long, Patient>`)
-  - Hospitals (`HashMap<Integer, Hospital>`)
-  - Rendezvous (`LinkedList<Rendezvous>`)
-- Responsible for:
-  - Adding entities
-  - Creating appointments
-  - Saving/loading data
+**Tables:**
 
-### 🔹 Appointment Logic
+- `users` — holds every account (Patient, Doctor, Billing Officer, Admin) with a `role` column; Admin logs in with a username, everyone else with a national ID
+- `polyclinics` — the list of departments (Cardiology, Dermatology, etc.)
+- `doctors` — links a doctor's user account to a polyclinic
+- `appointments` — a patient/doctor pairing at a specific time slot, with a status (`scheduled`, `completed`, `cancelled`)
+- `reports` — a visit's prescription code, clinical notes, charge, and payment status, linked one-to-one with a completed appointment
 
-- Each **Doctor** has a `Schedule`
-- Default limit: **10 patients per day**
-- Checks:
-  - Valid IDs (patient, hospital, section, doctor)
-  - Daily capacity
+Clinic hours and slot length are configurable in `app/config.py` (default: 09:00–17:00, 30-minute slots, Monday–Friday).
 
 ---
 
-## 💻 Running the Application
+## ⚙️ Setup & Run
 
-### Compile
+### Requirements
 
-javac -d bin src/model/*.java src/exception/*.java
+- [Python 3.11+](https://www.python.org/downloads/)
 
-### Run
+No database installation is required — SQLite runs as a local file created automatically the first time the app starts.
 
-java -cp bin model.Main
+### 1. Create and activate a virtual environment
 
----
+```bash
+python -m venv .venv
+```
 
-## 🎮 Mode Selection
+**Windows**
 
-1: GUI mode  
-2: Console mode  
+```bash
+.venv\Scripts\activate
+```
 
-- GUI → Swing interface  
-- Console → Terminal interaction  
+**macOS / Linux**
 
----
+```bash
+source .venv/bin/activate
+```
 
-## 💾 Data Persistence
+### 2. Install dependencies
 
-- File: `Datas.dat`
-- Uses Java Serialization
-- Automatically:
-  - Saves after operations
-  - Loads before usage
+```bash
+pip install -r requirements.txt
+```
 
----
+### 3. Run the app
 
-## ⚠️ Exception Handling
+```bash
+uvicorn app.main:app --reload
+```
 
-- `IDException` → Invalid IDs  
-- `DuplicateInfoException` → Duplicate entries  
+The app opens at [http://127.0.0.1:8000](http://127.0.0.1:8000). On first startup, `hospital.db` and all its tables are created automatically, and a default admin account is seeded.
 
----
+### 4. Try it out
 
-## 🧪 Testing
-
-Located in:
-
-src/test/
-
----
-
-## 🧠 Design Overview
-
-- Object-Oriented Design
-- Layer separation:
-  - model → logic
-  - exception → error handling
-- Uses:
-  - Collections
-  - Serialization
-  - Java Swing
+- Log in to the **Admin** panel with `admin` / `admin` and add a polyclinic, a doctor, and a billing officer.
+- Register a new **Patient** account from the login screen and book an appointment with the doctor you just created.
+- Log in as that **Doctor**, complete the visit, and write a report.
+- Log in as the **Billing Officer** and mark the resulting charge as paid.
 
 ---
 
-## 📌 Notes
+## 🔑 Logging In
 
-- IDs must be unique
-- GUI has limited validation
-- Data file is auto-created if missing
-
----
-
-## 👨‍💻 Author
-
-Clinical Appointment System Project (Java)
+| Role            | Identifier                     | Password               |
+| --------------- | ------------------------------ | ---------------------- |
+| Admin           | `admin`                      | `admin`              |
+| Patient         | National ID (self-registered)  | chosen at registration |
+| Doctor          | National ID (created by Admin) | set by Admin           |
+| Billing Officer | National ID (created by Admin) | set by Admin           |
 
 ---
 
-## 📄 License
+## ⚠️ Notes
 
-Educational use only
+- Passwords are hashed with bcrypt before being stored — nothing is kept in plain text.
+- The SQLite database file (`hospital.db`) is excluded from version control via `.gitignore`, so each clone starts empty aside from the seeded admin account.

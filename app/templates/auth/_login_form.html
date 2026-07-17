@@ -1,0 +1,31 @@
+<div class="card">
+    <h1>{{ role_label }} Sign In</h1>
+    {% if role_slug == "admin" %}
+    <p class="muted">Sign in with your admin username.</p>
+    {% else %}
+    <p class="muted">Sign in with your national ID.</p>
+    {% endif %}
+    <form method="post" action="/login/{{ role_slug }}"
+          hx-post="/login/{{ role_slug }}" hx-target="#login-form-area" hx-swap="innerHTML">
+        <label for="identifier">{% if role_slug == "admin" %}Username{% else %}National ID{% endif %}</label>
+        {% if role_slug == "admin" %}
+        <input type="text" id="identifier" name="identifier" autocomplete="off" required autofocus>
+        {% else %}
+        <input type="text" id="identifier" name="identifier" maxlength="11" inputmode="numeric" autocomplete="off"
+               oninput="this.value = this.value.replace(/\D/g, '').slice(0, 11)" required autofocus>
+        {% endif %}
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+
+        <button type="submit">Sign In</button>
+    </form>
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+    {% if role_slug == "patient" %}
+    <div class="auth-links">
+        Don't have an account? <a href="/register">Register as a patient</a>
+    </div>
+    {% endif %}
+</div>

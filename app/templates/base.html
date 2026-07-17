@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Hospital Appointment System{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+    <link rel="stylesheet" href="/static/css/style.css">
+    <script src="https://unpkg.com/htmx.org@2.0.3"></script>
+    <script>
+        htmx.config.responseHandling = [
+            { code: "204", swap: false },
+            { code: "[23]..", swap: true },
+            { code: "[45]..", swap: true, error: false }
+        ];
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key !== "Enter") {
+                return;
+            }
+            var target = event.target;
+            if (!target || target.tagName !== "INPUT") {
+                return;
+            }
+            var type = (target.getAttribute("type") || "text").toLowerCase();
+            if (["submit", "button", "checkbox", "radio", "file", "reset"].indexOf(type) !== -1) {
+                return;
+            }
+            var form = target.form;
+            if (!form) {
+                return;
+            }
+            var focusable = Array.prototype.filter.call(
+                form.querySelectorAll("input, select, textarea"),
+                function (el) {
+                    return !el.disabled && el.type !== "hidden" && el.offsetParent !== null;
+                }
+            );
+            var index = focusable.indexOf(target);
+            if (index === -1 || index === focusable.length - 1) {
+                return;
+            }
+            event.preventDefault();
+            focusable[index + 1].focus();
+        });
+    </script>
+</head>
+<body>
+    {% block topbar %}
+    <div class="topbar">
+        <a class="brand" href="/">Hospital Appointment System</a>
+        {% if user %}
+        <div class="user-info">
+            <span>{{ user.full_name }}</span>
+            <a class="btn btn-small secondary" href="/logout" id="logout-link">Logout</a>
+        </div>
+        {% endif %}
+    </div>
+    {% endblock %}
+
+    {% block content %}{% endblock %}
+
+    <div id="action-confirm-overlay" class="confirm-overlay" hidden>
+        <div class="confirm-dialog">
+            <p id="action-confirm-message"></p>
+            <div class="confirm-actions">
+                <button type="button" class="btn secondary" id="action-confirm-cancel-btn">Cancel</button>
+                <button type="button" class="btn danger" id="action-confirm-ok-btn">Confirm</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        (function () {
+            var overlay = document.getElementById("action-confirm-overlay");
+            var messageEl = document.getElementById("action-confirm-message");
+            var cancelBtn = document.getElementById("action-confirm-cancel-btn");
+            var okBtn = document.getElementById("action-confirm-ok-btn");
+
+            document.body.addEventListener("htmx:confirm", function (event) {
+                if (!event.detail.question) {
+                    return;
+                }
+                event.preventDefault();
+
+                messageEl.textContent = event.detail.question;
+                overlay.hidden = false;
+
+                function cleanup() {
+                    overlay.hidden = true;
+                    okBtn.removeEventListener("click", onConfirm);
+                    cancelBtn.removeEventListener("click", onCancel);
+                }
+
+                function onConfirm() {
+                    cleanup();
+                    event.detail.issueRequest(true);
+                }
+
+                function onCancel() {
+                    cleanup();
+                }
+
+                okBtn.addEventListener("click", onConfirm);
+                cancelBtn.addEventListener("click", onCancel);
+            });
+        })();
+    </script>
+
+    {% if user %}
+    <div id="logout-confirm-overlay" class="confirm-overlay" hidden>
+        <div class="confirm-dialog">
+            <p>Are you sure you want to log out?</p>
+            <div class="confirm-actions">
+                <button type="button" class="btn secondary" id="logout-cancel-btn">Cancel</button>
+                <button type="button" class="btn danger" id="logout-confirm-btn">Log Out</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        var overlay = document.getElementById("logout-confirm-overlay");
+        var cancelBtn = document.getElementById("logout-cancel-btn");
+        var confirmBtn = document.getElementById("logout-confirm-btn");
+        var logoutLink = document.getElementById("logout-link");
+
+        function showLogoutConfirm() {
+            overlay.hidden = false;
+        }
+
+        function hideLogoutConfirm() {
+            overlay.hidden = true;
+        }
+
+        logoutLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            showLogoutConfirm();
+        });
+
+        cancelBtn.addEventListener("click", function () {
+            hideLogoutConfirm();
+        });
+
+        confirmBtn.addEventListener("click", function () {
+            window.location.href = "/logout";
+        });
+
+        history.pushState(null, "", window.location.href);
+        window.addEventListener("popstate", function () {
+            history.pushState(null, "", window.location.href);
+            showLogoutConfirm();
+        });
+    </script>
+    {% endif %}
+</body>
+</html>

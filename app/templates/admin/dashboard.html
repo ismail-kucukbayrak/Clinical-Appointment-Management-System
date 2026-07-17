@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="admin-split">
+    <div class="admin-category-container">
+        <h1>Manage</h1>
+        <div class="role-list">
+            <a class="role-card" href="#"
+               hx-get="/admin/polyclinics/list" hx-target="#admin-list-area" hx-swap="innerHTML"
+               hx-on::after-request="document.getElementById('admin-form-area').innerHTML=''">
+                <span class="role-name">Polyclinics</span>
+                <span class="role-desc">Add or remove polyclinics</span>
+            </a>
+            <a class="role-card" href="#"
+               hx-get="/admin/doctors/list" hx-target="#admin-list-area" hx-swap="innerHTML"
+               hx-on::after-request="document.getElementById('admin-form-area').innerHTML=''">
+                <span class="role-name">Doctors</span>
+                <span class="role-desc">Add or remove doctors</span>
+            </a>
+            <a class="role-card" href="#"
+               hx-get="/admin/billing-officers/list" hx-target="#admin-list-area" hx-swap="innerHTML"
+               hx-on::after-request="document.getElementById('admin-form-area').innerHTML=''">
+                <span class="role-name">Billing Officers</span>
+                <span class="role-desc">Add or remove billing officers</span>
+            </a>
+        </div>
+    </div>
+    <div id="admin-list-area" class="admin-list-area">
+        {% include list_template %}
+    </div>
+    <div id="admin-form-area" class="admin-form-area"></div>
+</div>
+{% endblock %}

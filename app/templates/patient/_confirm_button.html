@@ -1,0 +1,10 @@
+{% if slot %}
+<div class="confirm-booking-row">
+    <button type="button" id="confirm-booking-btn" class="btn"
+            hx-post="/patient/book"
+            hx-target="#confirm-booking-btn"
+            hx-vals='{"doctor_id": "{{ doctor_id }}", "slot": "{{ slot }}"}'>
+        Confirm
+    </button>
+</div>
+{% endif %}

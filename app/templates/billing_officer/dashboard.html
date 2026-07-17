@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Billing Officer Dashboard{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Charge Lookup</h1>
+
+    <div class="card">
+        <label for="national_id">Patient National ID</label>
+        <input type="text" id="national_id" name="national_id" pattern="\d{11}" maxlength="11"
+               inputmode="numeric" autocomplete="off"
+               oninput="this.value = this.value.replace(/\D/g, '').slice(0, 11)"
+               placeholder="Enter 11-digit national ID">
+        <button type="button" class="btn"
+                hx-get="/billing-officer/search"
+                hx-target="#results"
+                hx-include="#national_id">
+            Show Report
+        </button>
+    </div>
+
+    <div id="results">
+        {% include "billing_officer/_results.html" %}
+    </div>
+</div>
+{% endblock %}

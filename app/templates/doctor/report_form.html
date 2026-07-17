@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Write Report{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Visit Report</h1>
+    <div class="card">
+        <p><strong>Patient:</strong> {{ appointment.patient.full_name }}</p>
+        <p><strong>Date &amp; Time:</strong> {{ appointment.slot_start.strftime("%d %B %Y") }} / {{ appointment.slot_start.strftime("%H:%M") }}</p>
+
+        <form method="post" action="/doctor/appointments/{{ appointment.id }}/report" id="report-form">
+            <label for="prescription_code">Prescription Code</label>
+            <input type="text" id="prescription_code" name="prescription_code" autofocus>
+
+            <label for="notes">Clinical Notes</label>
+            <textarea id="notes" name="notes"></textarea>
+
+            <label for="fee">Charge (USD)</label>
+            <div class="input-prefix-group">
+                <span class="input-prefix">$</span>
+                <input type="number" id="fee" name="fee" step="0.01" min="0">
+            </div>
+
+            <button type="submit">Submit Report</button>
+        </form>
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <p class="auth-links"><a href="/doctor" id="back-to-dashboard-link">Back to dashboard</a></p>
+    </div>
+</div>
+<script>
+    (function () {
+        var form = document.getElementById("report-form");
+        var backLink = document.getElementById("back-to-dashboard-link");
+        var submitted = false;
+
+        function submitReport() {
+            if (submitted) {
+                return;
+            }
+            submitted = true;
+            form.submit();
+        }
+
+        backLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            submitReport();
+        });
+
+        history.pushState(null, "", window.location.href);
+        window.addEventListener("popstate", function () {
+            submitReport();
+        });
+
+        form.addEventListener("submit", function () {
+            submitted = true;
+        });
+    })();
+</script>
+{% endblock %}

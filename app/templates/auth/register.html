@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Register - Hospital Appointment System{% endblock %}
+{% block topbar %}
+<div class="topbar">
+    <a class="brand" href="/">Hospital Appointment System</a>
+    <a class="back-link" href="/login">&larr; Back to role selection</a>
+</div>
+{% endblock %}
+{% block content %}
+<div class="auth-container">
+    <div class="card">
+        <h1>Patient Registration</h1>
+        <form method="post" action="/register">
+            <label for="full_name">Full Name</label>
+            <input type="text" id="full_name" name="full_name" required autofocus>
+
+            <label for="national_id">National ID (11 digits)</label>
+            <input type="text" id="national_id" name="national_id" pattern="\d{11}" maxlength="11"
+                   inputmode="numeric" autocomplete="off"
+                   oninput="this.value = this.value.replace(/\D/g, '').slice(0, 11)" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="confirm_password">Confirm Password</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+
+            <button type="submit">Register</button>
+        </form>
+        {% if error %}
+        <div class="error-message">{{ error }}</div>
+        {% endif %}
+        <div class="auth-links">
+            Already have an account? <a href="/login">Sign in</a>
+        </div>
+    </div>
+</div>
+{% endblock %}

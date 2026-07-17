@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}Doctor Dashboard{% endblock %}
+{% block content %}
+<div class="container">
+    <h1>Welcome, Dr. {{ user.full_name }}</h1>
+    <p class="muted">{{ doctor.polyclinic.name }} &middot; Today's schedule ({{ today.strftime("%d %B %Y") }})</p>
+
+    <div class="card">
+        <h2>Today's Appointments</h2>
+        {% if appointments %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Patient</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for appointment in appointments %}
+                <tr>
+                    <td>{{ appointment.slot_start.strftime("%H:%M") }}</td>
+                    <td>{{ appointment.patient.full_name }}</td>
+                    <td><span class="badge {{ appointment.status.value }}">{{ appointment.status.value }}</span></td>
+                    <td>
+                        {% if appointment.status.value == "scheduled" %}
+                        <form method="post" action="/doctor/appointments/{{ appointment.id }}/complete" style="display:inline;">
+                            <button type="submit" class="btn-small">Complete Visit</button>
+                        </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p class="empty-state">No appointments scheduled for today.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

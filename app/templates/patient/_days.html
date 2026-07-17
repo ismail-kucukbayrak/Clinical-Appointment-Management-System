@@ -1,0 +1,15 @@
+<label for="day_select">Day</label>
+<select id="day_select" name="day"
+        hx-get="/patient/book/slots"
+        hx-target="#slot-wrapper"
+        hx-trigger="change"
+        hx-vals='{"doctor_id": "{{ doctor_id }}"}'>
+    <option value="">Select a day</option>
+    {% for day in bookable_days %}
+    <option value="{{ day.isoformat() }}" {% if day == selected_day %}selected{% endif %}>
+        {{ day.strftime("%d %B %Y") }}
+    </option>
+    {% endfor %}
+</select>
+
+<div id="slot-wrapper"></div>

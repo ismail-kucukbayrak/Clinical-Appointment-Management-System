@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}{% if role_label %}{{ role_label }} Sign In{% else %}Sign In{% endif %} - Hospital Appointment System{% endblock %}
+{% block topbar %}
+<div class="topbar">
+    <a class="brand" href="/">Hospital Appointment System</a>
+    <a class="btn btn-small secondary" href="/login/admin"
+       hx-get="/login/admin/form" hx-target="#login-form-area" hx-swap="innerHTML">Admin</a>
+</div>
+{% endblock %}
+{% block content %}
+<div class="login-split">
+    <div class="role-select-container">
+        <h1>Choose Your Role &darr;</h1>
+        <div class="role-list">
+            <a class="role-card {% if role_slug == 'patient' %}active{% endif %}" href="/login/patient"
+               hx-get="/login/patient/form" hx-target="#login-form-area"
+               hx-swap="innerHTML">
+                <span class="role-name">Patient</span>
+                <span class="role-desc">Book and manage your appointments</span>
+            </a>
+            <a class="role-card {% if role_slug == 'doctor' %}active{% endif %}" href="/login/doctor"
+               hx-get="/login/doctor/form" hx-target="#login-form-area"
+               hx-swap="innerHTML">
+                <span class="role-name">Doctor</span>
+                <span class="role-desc">View today's appointments and write visit reports</span>
+            </a>
+            <a class="role-card {% if role_slug == 'billing-officer' %}active{% endif %}" href="/login/billing-officer"
+               hx-get="/login/billing-officer/form" hx-target="#login-form-area"
+               hx-swap="innerHTML">
+                <span class="role-name">Billing Officer</span>
+                <span class="role-desc">Look up patient charges and mark payments</span>
+            </a>
+        </div>
+    </div>
+    <div id="login-form-area" class="login-form-area">
+        {% if role_slug %}
+        {% include "auth/_login_form.html" %}
+        {% endif %}
+    </div>
+</div>
+<script>
+    (function () {
+        var roleCards = document.querySelectorAll(".role-card");
+        var adminBtn = document.querySelector(".topbar .btn.secondary");
+
+        function clearActive() {
+            roleCards.forEach(function (card) {
+                card.classList.remove("active");
+            });
+        }
+
+        roleCards.forEach(function (card) {
+            card.addEventListener("click", function () {
+                clearActive();
+                card.classList.add("active");
+            });
+        });
+
+        if (adminBtn) {
+            adminBtn.addEventListener("click", function () {
+                clearActive();
+            });
+        }
+    })();
+</script>
+{% endblock %}

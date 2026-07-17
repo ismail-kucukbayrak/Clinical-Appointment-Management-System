@@ -1,0 +1,11 @@
+<div class="card">
+    <h2>Add Polyclinic</h2>
+    <form hx-post="/admin/polyclinics" hx-target="#admin-list-area" hx-swap="innerHTML">
+        <label for="polyclinic_name">Name</label>
+        <input type="text" id="polyclinic_name" name="name" required autofocus>
+        <button type="submit">Add Polyclinic</button>
+    </form>
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+</div>

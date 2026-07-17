@@ -1,0 +1,16 @@
+{% if doctors %}
+<label for="doctor_id">Doctor</label>
+<select id="doctor_id" name="doctor_id"
+        hx-get="/patient/book/days"
+        hx-target="#day-wrapper"
+        hx-trigger="change">
+    <option value="">Select a doctor</option>
+    {% for doctor in doctors %}
+    <option value="{{ doctor.id }}">{{ doctor.user.full_name }}</option>
+    {% endfor %}
+</select>
+
+<div id="day-wrapper"></div>
+{% else %}
+<p class="empty-state">No doctors available in this polyclinic yet.</p>
+{% endif %}

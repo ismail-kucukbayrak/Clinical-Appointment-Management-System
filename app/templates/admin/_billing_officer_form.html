@@ -1,0 +1,20 @@
+<div class="card">
+    <h2>Add Billing Officer</h2>
+    <form hx-post="/admin/billing-officers" hx-target="#admin-list-area" hx-swap="innerHTML">
+        <label for="billing_officer_full_name">Full Name</label>
+        <input type="text" id="billing_officer_full_name" name="full_name" required autofocus>
+
+        <label for="billing_officer_national_id">National ID</label>
+        <input type="text" id="billing_officer_national_id" name="national_id" pattern="\d{11}" maxlength="11"
+               inputmode="numeric" autocomplete="off"
+               oninput="this.value = this.value.replace(/\D/g, '').slice(0, 11)" required>
+
+        <label for="billing_officer_password">Password</label>
+        <input type="password" id="billing_officer_password" name="password" required>
+
+        <button type="submit">Add Billing Officer</button>
+    </form>
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+</div>
